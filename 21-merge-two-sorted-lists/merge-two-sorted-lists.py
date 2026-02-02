@@ -6,24 +6,31 @@
 
 class Solution:
     def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        # Anchor for our new list
+        dummy = ListNode(0)
+        current = dummy
         
-        dummy = ListNode(-1)   # Temporary starting node
-        tail = dummy           # Pointer to build the result list
-        
-        while list1 and list2:
-            if list1.val <= list2.val:
-                tail.next = list1
-                list1 = list1.next
+        left = list1
+        right = list2
+
+        # Instead of i < len(left), check if the current node exists
+        while left and right:
+            # Your logic: compare values and "append" to the result
+            if left.val <= right.val:
+                current.next = left
+                left = left.next # "i += 1"
             else:
-                tail.next = list2
-                list2 = list2.next
+                current.next = right
+                right = right.next # "j += 1"
             
-            tail = tail.next   # Move tail forward
-        
-        # Attach remaining nodes (only one list will have nodes left)
-        if list1:
-            tail.next = list1
-        else:
-            tail.next = list2
-        
+            # Move the result pointer forward
+            current = current.next
+
+        # "while i < n" equivalent: attach the remaining chain
+        if left:
+            current.next = left
+        if right:
+            current.next = right
+
+        # Return the actual head (skipping the dummy)
         return dummy.next

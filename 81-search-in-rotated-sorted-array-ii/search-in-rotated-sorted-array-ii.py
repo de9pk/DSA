@@ -19,7 +19,7 @@ class Solution:
             # Left half sorted
             elif nums[l] <= nums[mid]:
 
-                if nums[l] <= target < nums[mid]:
+                if nums[l] <= target <= nums[mid]:
                     h = mid - 1
                 else:
                     l = mid + 1
@@ -27,7 +27,7 @@ class Solution:
             # Right half sorted
             else:
 
-                if nums[mid] < target <= nums[h]:
+                if nums[mid] <= target <= nums[h]:
                     l = mid + 1
                 else:
                     h = mid - 1

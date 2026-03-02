@@ -5,7 +5,18 @@ class Solution:
         n = len(nums)
         mini = float("inf")
 
-        for i in range(n):
-            mini = min(mini, nums[i])
+        l = 0
+        h = n-1
+ 
 
-        return mini
+        while l < h:
+            mid = (l + h) // 2
+
+            if nums[mid] > nums[h]:
+                # Minimum is in right half
+                l = mid + 1
+            else:
+                # Minimum is in left half (including mid)
+                h = mid
+
+        return nums[l]

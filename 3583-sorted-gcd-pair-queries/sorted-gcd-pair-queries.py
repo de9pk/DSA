@@ -1,16 +1,43 @@
+from typing import List
+from bisect import bisect_left
+
 class Solution:
-    def gcdValues(self, A: list[int], queries: list[int]) -> list[int]:
-        mx = max(A)
+    def gcdValues(self, nums: List[int], queries: List[int]) -> List[int]:
+        mx = max(nums)
+
+        # Frequency of each number
         freq = [0] * (mx + 1)
-        for a in A: 
-            freq[a] += 1
-            
-        GCD = [0] * (mx + 1)
-        
-        for i in range(mx, 0, -1):
-            sm = sum(freq[i::i])
-            GCD[i] = sm * (sm - 1) // 2 - sum(GCD[i::i])
-            
-        GCD = list(accumulate(GCD))
-        
-        return [bisect.bisect_right(GCD, q) for q in queries]
+        for x in nums:
+            freq[x] += 1
+
+        # cnt[d] = numbers divisible by d
+        cnt = [0] * (mx + 1)
+        for d in range(1, mx + 1):
+            for multiple in range(d, mx + 1, d):
+                cnt[d] += freq[multiple]
+
+        # pairs[d] = number of pairs having gcd exactly d
+        pairs = [0] * (mx + 1)
+        for d in range(mx, 0, -1):
+            c = cnt[d]
+            pairs[d] = c * (c - 1) // 2
+            for multiple in range(2 * d, mx + 1, d):
+                pairs[d] -= pairs[multiple]
+
+        # Prefix sum of pair counts
+        prefix = []
+        values = []
+        total = 0
+        for g in range(1, mx + 1):
+            if pairs[g]:
+                total += pairs[g]
+                prefix.append(total)
+                values.append(g)
+
+        # Answer queries
+        ans = []
+        for q in queries:
+            idx = bisect_left(prefix, q + 1)
+            ans.append(values[idx])
+
+        return ans

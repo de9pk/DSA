@@ -1,25 +1,47 @@
 class Solution:
     def maxActiveSectionsAfterTrade(self, s: str) -> int:
-        ones = s.count("1")
+        ones = s.count('1')
 
-        t = "1" + s + "1"
+        s = '1' + s + '1'
 
-        runs = []
+        n = len(s)
+        i = 0
 
-        for ch in t:
-            if not runs or runs[-1][0] != ch:
-                runs.append([ch, 1])
-            else:
-                runs[-1][1] += 1
+        ans = ones
 
-        best = 0
+        # Skip first 1's
+        while i < n and s[i] == '1':
+            i += 1
 
-        for i in range(1, len(runs) - 1):
-            if (
-                runs[i][0] == "1"
-                and runs[i - 1][0] == "0"
-                and runs[i + 1][0] == "0"
-            ):
-                best = max(best, runs[i - 1][1] + runs[i + 1][1])
+        # Read first 0-block
+        c10 = 0
+        while i < n and s[i] == '0':
+            c10 += 1
+            i += 1
 
-        return ones + best
+        while i < n:
+
+            # Read middle 1-block
+            c11 = 0
+            while i < n and s[i] == '1':
+                c11 += 1
+                i += 1
+
+            if c11 == 0:
+                break
+
+            # Read right 0-block
+            c20 = 0
+            while i < n and s[i] == '0':
+                c20 += 1
+                i += 1
+
+            if c20 == 0:
+                break
+
+            ans = max(ans, ones + c10 + c20)
+
+            # Slide the window
+            c10 = c20
+
+        return ans

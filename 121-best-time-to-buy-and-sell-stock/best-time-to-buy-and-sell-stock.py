@@ -5,13 +5,13 @@ class Solution:
         ans = 0
 
         while r<len(prices):
-            if prices[r]>prices[l]:
+            if prices[r]<prices[l]:
+                l=r
+    
+            else:
                 diff = prices[r]-prices[l]
                 ans = max(ans,diff)
-            
-            else:
-                l=r
         
             r+=1
-            
+
         return ans

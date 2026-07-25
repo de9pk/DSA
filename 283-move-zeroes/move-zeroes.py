@@ -3,9 +3,12 @@ class Solution:
         """
         Do not return anything, modify nums in-place instead.
         """
-        last_non_zero = 0
+        l=0
         
-        for i in range(len(nums)):
-            if nums[i] != 0:
-                nums[last_non_zero], nums[i] = nums[i], nums[last_non_zero]
-                last_non_zero += 1
+        for r in range(len(nums)):
+            if nums[r]!=0:
+                nums[r],nums[l] = nums[l],nums[r]
+                l+=1
+            
+
+        

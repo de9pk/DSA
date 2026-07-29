@@ -1,23 +1,24 @@
+from collections import Counter
+
 class Solution:
     def smallestPalindrome(self, s: str) -> str:
-
-        freq = [0] * 26
-
-        for ch in s:
-            freq[ord(ch) - ord('a')] += 1
-
+        freq = Counter(s)
         left = []
         middle = ""
 
-        for i in range(26):
+        for ch in sorted(freq):
+            left.append(ch*(freq[ch]//2))
 
-            left.append(chr(ord('a') + i) * (freq[i] // 2))
+            if freq[ch] % 2:
+                middle = ch
+            
+        left="".join(left)
+            
+        return left + middle + left[::-1]
 
-            if freq[i] % 2:
-                middle = chr(ord('a') + i)
 
-        left = "".join(left)
 
-        right = left[::-1]
 
-        return left + middle + right
+
+
+

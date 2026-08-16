@@ -12,4 +12,9 @@ class Solution:
             else:
                 heapq.heappush(heap, (dist, x, y))
         
-        return [(x,y) for (dist,x, y) in heap]
+        result = []
+
+        for dist, x, y in heap:
+            result.append([x, y])
+
+        return result
